@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/Form-JS/Demo-NodeJS-04-WebServer2#readme",
   "dependencies": {
+    "ejs": "^3.1.6"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.15"
   }
 }
