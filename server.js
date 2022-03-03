@@ -17,7 +17,7 @@ const products = [
 ];
 // Exercice => Créer 2 pages
 //  "product"   : Affiche une page la liste des produits (Nom + prix)
-//  "product/5" : Affiche une page avec le detail du produit
+//  "product/15" : Affiche une page avec le detail du produit
 
 
 const sendServerResponse = (res, pageName, data = {}, code = 200) => {
@@ -112,6 +112,13 @@ const server = http.createServer((req, res) => {
     else if (req.method === 'POST' && url.pathname.toLowerCase() === '/contact') {
         getBodyData(req).then((data) => {
             sendServerResponse(res, 'contact/response', { name: data.name });
+        });
+    }
+    else if (req.method === 'GET' && url.pathname.toLowerCase() === '/product') {
+
+        sendServerResponse(res, 'product/index', {
+            nbProducts: products.length,
+            products
         });
     }
     else {
