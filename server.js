@@ -54,25 +54,21 @@ const server = http.createServer((req, res) => {
         sendFile(res, url.pathname);
     }
     // - Page d'accueil (→ Avec une Regex)
-    else if (/^\/(home\/?)?$/i.test(url.pathname)) {
+    else if (req.method === 'GET' && /^\/(home\/?)?$/i.test(url.pathname)) {
         const now = new Date();
         const today = now.toLocaleDateString('fr-be');
         sendServerResponse(res, 'home/index', { today });
     }
     // - About
-    else if (url.pathname.toLowerCase() === '/about') {
+    else if (req.method === 'GET' && url.pathname.toLowerCase() === '/about') {
         sendServerResponse(res, 'home/about');
     }
     // - Contact
-    else if (url.pathname.toLowerCase() === '/contact') {
-        console.log(req.method);
-        if (req.method === 'GET') {
-            sendServerResponse(res, 'contact/index');
-        }
-        else {
-
-            sendServerResponse(res, 'contact/response');
-        }
+    else if (req.method === 'GET' && url.pathname.toLowerCase() === '/contact') {
+        sendServerResponse(res, 'contact/index');
+    }
+    else if (req.method === 'POST' && url.pathname.toLowerCase() === '/contact') {
+        sendServerResponse(res, 'contact/response');
     }
     else {
         sendServerResponse(res, 'error/404', 404);
