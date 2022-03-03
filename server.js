@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const { URL, URLSearchParams } = require('url');
 const ejs = require('ejs');
+const querystring = require('query-string');
+const { resolve } = require('path');
 
 const sendServerResponse = (res, pageName, data = {}, code = 200) => {
     // Récuperation du fichier "view" de la page demandé
@@ -42,6 +44,32 @@ const sendFile = (res, targetFile) => {
     });
 };
 
+const getBodyData = (req) => {
+    // On s'assure que la requete est un 'POST' -> Sinon aucunne donnée
+    if (req.method !== 'POST') {
+        return Promise.resolve(null);
+    }
+
+    return new Promise((resolve) => {
+        // Event DATA: Permet de lire les données de la requete POST
+        let body = '';
+        req.on('data', (postData) => {
+            // console.log(postData);
+            body += postData.toString('utf-8');
+        });
+
+        // Event END: Se déclanche quand toutes les données ont été traité 
+        req.on('end', () => {
+            console.log(body);
+            // body => name=Olivier&email=oli%40caramail.com&message=Test
+            // Réponse de type "application/x-www-form-urlencoded" pour les formulaires
+            const result = querystring.parse(body);
+
+            resolve(result);
+        });
+    });
+};
+
 // Création du server
 const server = http.createServer((req, res) => {
     // Extraction des informations de l'url
@@ -68,13 +96,14 @@ const server = http.createServer((req, res) => {
         sendServerResponse(res, 'contact/index');
     }
     else if (req.method === 'POST' && url.pathname.toLowerCase() === '/contact') {
-        sendServerResponse(res, 'contact/response');
+        getBodyData(req).then((data) => {
+            sendServerResponse(res, 'contact/response', { name: data.name });
+        });
     }
     else {
         sendServerResponse(res, 'error/404', 404);
     }
 });
-
 
 
 // Lancement du server
