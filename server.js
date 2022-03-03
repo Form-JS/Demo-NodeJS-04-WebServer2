@@ -4,7 +4,21 @@ const fs = require('fs');
 const { URL, URLSearchParams } = require('url');
 const ejs = require('ejs');
 const querystring = require('query-string');
-const { resolve } = require('path');
+
+// Liste de produit (Hardcodé / Cas pratique => Utilisation d'une DB!)
+const products = [
+    { id: 1, name: 'T-Shirt', desc: 'T-Shirt My little Poney', price: 20 },
+    { id: 2, name: 'Pull', desc: 'Pull noir', price: 34.99 },
+    { id: 3, name: 'Robe', desc: 'Robe classique', price: 42 },
+    { id: 4, name: 'Robe longue', desc: 'Robe bleu ou dorée ?', price: 74.95 },
+    { id: 5, name: 'Jean', desc: 'Bah... C\'est un jean.', price: 24.5 },
+    { id: 6, name: 'Pantalon', desc: 'Super pantalon rose bonbon', price: 10.01 },
+    { id: 7, name: 'Short', desc: 'Petit short bob l\'eponge', price: 99.95 },
+];
+// Exercice => Créer 2 pages
+//  "product"   : Affiche une page la liste des produits (Nom + prix)
+//  "product/5" : Affiche une page avec le detail du produit
+
 
 const sendServerResponse = (res, pageName, data = {}, code = 200) => {
     // Récuperation du fichier "view" de la page demandé
