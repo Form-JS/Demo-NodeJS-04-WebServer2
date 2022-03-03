@@ -115,14 +115,36 @@ const server = http.createServer((req, res) => {
         });
     }
     else if (req.method === 'GET' && url.pathname.toLowerCase() === '/product') {
-
         sendServerResponse(res, 'product/index', {
             nbProducts: products.length,
-            products
+            products: products.map(product => ({
+                ...product,
+                price: product.price.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' })
+            }))
         });
     }
+    else if (req.method === 'GET' && (/^\/product\/[0-9]+$/i).test(url.pathname)) {
+        // Récuperation de l'id
+        const urlPart = url.pathname.split('/');
+        const productId = parseInt(urlPart[urlPart.length - 1]);
+        console.log('Id => ', productId);
+
+        // Récuperation du produit qui a cette id
+        const product = products.find(p => p.id === productId);
+        console.log(product);
+
+        if (product) {
+            // Affichage du detail du produit
+            const priceEuro = product.price.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' });
+            sendServerResponse(res, 'product/detail', { product, priceEuro });
+        }
+        else {
+            // Affichage d'une erreur 404 dédié au produit (cf : Pierre :p)
+            sendServerResponse(res, 'product/notfound', { productId }, code = 404);
+        }
+    }
     else {
-        sendServerResponse(res, 'error/404', 404);
+        sendServerResponse(res, 'error/404', code = 404);
     }
 });
 

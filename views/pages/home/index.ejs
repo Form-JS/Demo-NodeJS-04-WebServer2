@@ -1,29 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('../../partials/_head.ejs', {pageName: 'Accueil' }) %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo - Home</title>
-</head>
+  <h1>Home - Intro à Templating ♥</h1>
+  <h2>Aujourd'hui, nous sommes <%=today%>
+  </h2>
 
-<body>
-    <h1>Home - Intro à Templating ♥</h1>
-    <h2>
-        Aujourd'hui, nous sommes <%=today%>
-    </h2>
+  <img src="images/della-duck.png" alt="Della Duck" />
 
-    <img src="images/della-duck.png" alt="Della Duck">
+  <p>
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum
+    deleniti pariatur ducimus eius dolorem molestiae quis, qui illum ipsa
+    repudiandae quam odit vero accusantium placeat quae at explicabo sed!
+    Voluptatum?
+  </p>
 
-    <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum deleniti pariatur ducimus eius dolorem
-        molestiae quis, qui illum ipsa repudiandae quam odit vero accusantium placeat quae at explicabo sed! Voluptatum?
-    </p>
-
-    <script>
-        console.log('On va manger :)');
-    </script>
-</body>
-
-</html>
+  <%- include('../../partials/_footer.ejs') %>
